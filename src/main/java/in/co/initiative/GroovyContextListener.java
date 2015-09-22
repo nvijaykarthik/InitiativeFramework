@@ -15,6 +15,8 @@ public class GroovyContextListener implements ServletContextListener {
 	private String[] destroyScripts;
 	private GroovyScriptEngine scriptEngine;
 
+	
+	
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext ctx = sce.getServletContext();
