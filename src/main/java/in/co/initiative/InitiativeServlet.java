@@ -26,8 +26,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 
 public class InitiativeServlet extends GroovyServlet {
@@ -37,7 +36,7 @@ public class InitiativeServlet extends GroovyServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	Logger log = LoggerFactory.getLogger(InitiativeServlet.class);
+	private final Logger log = Logger.getLogger(this.getClass());
 
     @Override
     public URLConnection getResourceConnection(String name) throws ResourceException {

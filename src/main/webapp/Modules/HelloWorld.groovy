@@ -1,9 +1,9 @@
 import org.apache.log4j.Logger
-import org.slf4j.LoggerFactory;
 
 
-def log = LoggerFactory.getLogger(this.class);
+def log = Logger.getLogger(this.class);
 log.info("Welcome");
+log.debug("Welcome Debug");
 
 html.html {
 	head {

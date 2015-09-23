@@ -3,14 +3,18 @@ package in.co.initiative;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+import org.apache.log4j.Logger;
+
 import java.io.*;
+
 import groovy.lang.Binding;
 import groovy.util.GroovyScriptEngine;
-import org.slf4j.*;
+
 
 
 public class GroovyContextListener implements ServletContextListener {
-	private static Logger logger = LoggerFactory.getLogger(GroovyContextListener.class);
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private String[] initScripts;
 	private String[] destroyScripts;
 	private GroovyScriptEngine scriptEngine;
@@ -59,7 +63,7 @@ public class GroovyContextListener implements ServletContextListener {
 	}
 
 	private Binding createBinding(ServletContext ctx) {
-		Logger scriptLogger = LoggerFactory.getLogger(GroovyContextListener.class.getName() + "_script");
+		Logger scriptLogger = Logger.getLogger(GroovyContextListener.class.getName() + "_script");
 		Binding binding = new Binding();
 		binding.setVariable("logger", scriptLogger);
 		binding.setVariable("servletContext", ctx);
