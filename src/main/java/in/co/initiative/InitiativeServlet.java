@@ -15,8 +15,13 @@
  */
 package in.co.initiative;
 
+import groovy.lang.Closure;
 import groovy.servlet.GroovyServlet;
+import groovy.servlet.ServletBinding;
+import groovy.servlet.ServletCategory;
+import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceException;
+import groovy.util.ScriptException;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +31,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
+import org.codehaus.groovy.runtime.GroovyCategorySupport;
 
 
 public class InitiativeServlet extends GroovyServlet {
@@ -38,6 +49,18 @@ public class InitiativeServlet extends GroovyServlet {
 	
 	private final Logger log = Logger.getLogger(this.getClass());
 
+	private GroovyScriptEngine gse;
+
+	
+	public void init(ServletConfig config) throws ServletException {
+	        super.init(config);
+
+	        // Set up the scripting engine
+	        gse = createGroovyScriptEngine();
+	        
+	        servletContext.log("Groovy servlet initialized on " + gse + " by Initiative Framework.");
+	    }
+	
     @Override
     public URLConnection getResourceConnection(String name) throws ResourceException {
     	log.trace("getResourceConnection : "+name);
@@ -94,5 +117,80 @@ public class InitiativeServlet extends GroovyServlet {
             }
         }
         return name;
+    }
+    
+
+    @Override
+    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    	log.trace("Using Initiative Framework Servlet");
+        // Get the script path from the request - include aware (GROOVY-815)
+        final String scriptUri = getScriptUri(request);
+
+        // Set it to HTML by default
+        response.setContentType("text/html; charset="+encoding);
+
+        // Set up the script context
+        final ServletBinding binding = new InitiativeServletBinding(request, response, servletContext);
+        setVariables(binding);
+
+        // Run the script
+        try {
+            Closure closure = new Closure(gse) {
+
+                public Object call() {
+                    try {
+                        return ((GroovyScriptEngine) getDelegate()).run(scriptUri, binding);
+                    } catch (ResourceException e) {
+                        throw new RuntimeException(e);
+                    } catch (ScriptException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            };
+            GroovyCategorySupport.use(ServletCategory.class, closure);
+        } catch (RuntimeException runtimeException) {
+            StringBuffer error = new StringBuffer("GroovyServlet Error: ");
+            error.append(" script: '");
+            error.append(scriptUri);
+            error.append("': ");
+            Throwable e = runtimeException.getCause();
+            /*
+             * Null cause?!
+             */
+            if (e == null) {
+                error.append(" Script processing failed.\n");
+                error.append(runtimeException.getMessage());
+                if (runtimeException.getStackTrace().length > 0)
+                    error.append(runtimeException.getStackTrace()[0].toString());
+                servletContext.log(error.toString());
+                System.err.println(error.toString());
+                runtimeException.printStackTrace(System.err);
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, error.toString());
+                return;
+            }
+            /*
+             * Resource not found.
+             */
+            if (e instanceof ResourceException) {
+                error.append(" Script not found, sending 404.");
+                servletContext.log(error.toString());
+                System.err.println(error.toString());
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            /*
+             * Other internal error. Perhaps syntax?!
+             */
+            servletContext.log("An error occurred processing the request", runtimeException);
+            error.append(e.getMessage());
+            if (e.getStackTrace().length > 0)
+                error.append(e.getStackTrace()[0].toString());
+            servletContext.log(e.toString());
+            System.err.println(e.toString());
+            runtimeException.printStackTrace(System.err);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.toString());
+        }
     }
 }

@@ -38,9 +38,6 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-core:2.4.2'
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.4.2'
 	compile 'jstl:jstl:1.2'
-	compile 'com.h2database:h2:1.4.189'
-	compile 'org.postgresql:postgresql:9.4-1203-jdbc41'
-	//compile 'com.oracle:ojdbc6:11.2.0.3'
 	
 	providedCompile 'log4j:log4j:1.2.17'
 	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'

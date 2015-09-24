@@ -6,8 +6,6 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
 
-import java.io.*;
-
 import groovy.lang.Binding;
 import groovy.util.GroovyScriptEngine;
 
@@ -24,7 +22,7 @@ public class GroovyContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext ctx = sce.getServletContext();
-
+		
 		String initScriptsStr = ctx.getInitParameter("initScripts");
 		if (initScriptsStr != null && !initScriptsStr.trim().equals(""))
 			initScripts = initScriptsStr.split(",");
@@ -73,7 +71,7 @@ public class GroovyContextListener implements ServletContextListener {
 	private void runScript(String filename, Binding binding) throws Exception {
 		if (filename.startsWith("/"))
 			filename = filename.substring(1);
-		logger.info("Running destroy script: " + filename);
+		logger.info("Running script: " + filename);
 		scriptEngine.run(filename, binding);
 	}
 }

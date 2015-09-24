@@ -31,11 +31,19 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring-dispatcher-servlet.xml</param-value>
 	</context-param>
+	
+	
+	<!-- <listener>
+		<listener-class>in.co.initiative.GroovyContextListener</listener-class>
+	</listener>
+	<context-param>  
+	   <param-name>initScripts</param-name>
+	   <param-value>/WEB-INF/groovy/init.groovy</param-value>
+	</context-param> -->
 	
 <!-- <servlet>
 		<servlet-name>TemplateServlet</servlet-name>
@@ -45,4 +53,7 @@
 		<servlet-name>TemplateServlet</servlet-name>
 		<url-pattern>*.gt</url-pattern>
 	</servlet-mapping> -->
+	
+	<!-- http://docs.groovy-lang.org/latest/html/documentation/servlet-userguide.html
+		http://docs.groovy-lang.org/latest/html/documentation/sql-userguide.html#_connecting_with_a_datasource -->
 </web-app>
