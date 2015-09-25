@@ -77,7 +77,7 @@ public class InitiativeServlet extends GroovyServlet {
             String tryScriptName = "/" + name;
             URL url = servletContext.getResource(tryScriptName);
             if (url == null) {
-                tryScriptName = "/Modules" + name;
+                tryScriptName = "/modules" + name;
                 url = servletContext.getResource("/modules/" + name);
             }
           

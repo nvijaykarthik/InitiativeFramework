@@ -15,12 +15,12 @@
         http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd">
 
 	<context:property-placeholder location="classpath:application.properties" />
-	<context:component-scan base-package="in.co.initiative.spring" />
-
+		<context:component-scan base-package="in.co.initiative.spring" />
 	<!-- <bean class="org.springframework.web.servlet.view.XmlViewResolver"> 
 		<property name="location"> <value>/WEB-INF/spring-excel-views.xml</value> 
 		</property> <property name="order" value="0"/> </bean> -->
 
+	<bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller" />
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -67,4 +67,5 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:annotation-driven />
 
+	
 </beans>
