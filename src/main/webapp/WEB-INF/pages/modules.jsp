@@ -6,15 +6,14 @@
 </head>
 <body>
 
-<table>
+<table border="1">
 <thead>
 <tr>
 	<th>Name</th>
         <th>Description</th>
         <th>Date</th>
         <th>Version</th>
-        <th>Activate</th>
-        <th>refPath</th>
+        <th>project</th>
 
 </tr>
 </thead>
@@ -25,8 +24,7 @@
         <td><c:out value="${p.description}"/></td>
         <td><c:out value="${p.date}"/></td>
         <td><c:out value="${p.version}"/></td>
-        <td><c:out value="${p.activated}"/></td>
-        <td><c:out value="${p.refPath}"/></td>
+        <td><c:out value="${p.project}"/></td>
     </tr>
 </c:forEach>
 </tbody>

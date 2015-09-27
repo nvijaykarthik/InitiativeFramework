@@ -39,8 +39,6 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.4.2'
 	compile 'jstl:jstl:1.2'
 	compile 'org.springframework:spring-oxm:4.2.1.RELEASE'
-	compile 'org.codehaus.castor:castor:1.2'
-	compile 'xerces:xercesImpl:2.11.0'
 
 	
 	providedCompile 'log4j:log4j:1.2.17'
@@ -51,3 +49,11 @@ dependencies {
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile 'junit:junit:4.11'
 }
+
+
+task explodedWar(type: Copy) {
+    into "$buildDir/exploded"
+    with war
+}
+war.dependsOn explodedWar
+

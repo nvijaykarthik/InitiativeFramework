@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import in.co.initiative.spring.model.Modules;
+import in.co.initiative.spring.model.xml.Module;
 
 
 @Component
@@ -24,21 +24,21 @@ public class ModulesService {
 	private final Logger log = Logger.getLogger(this.getClass());
 	
 	@Autowired
-	@Qualifier("castorMarshaller")
-	private Unmarshaller unmarshaller;
+	@Qualifier("jaxbMarshallerBean")
+	Unmarshaller unmarshaller;
 
-	public List<Modules> loadModules(String[] directories,String contextPath) throws IOException
+	public List<Module> loadModules(String[] directories,String contextPath) throws IOException
 	{
 		log.info("Loading Modules");
 		
-		List<Modules> modules = new ArrayList<Modules>();
+		List<Module> modules = new ArrayList<Module>();
 		
 		
 		for(String directory:directories)
 		{
 			File info=new File(contextPath+directory+File.separator+"initiative-info.xml");
 			modules.add(loadModule(info));
-			log.info("Module Added"+directory);
+			log.debug("Module Added"+directory);
 		}
 		
 		log.info("Loaded Modules"+modules);
@@ -46,16 +46,13 @@ public class ModulesService {
 		return modules;
 	}
 		
-	protected Modules loadModule(File info) {
-        Modules module = new Modules();
-        
-        log.info("UnMarshalling "+info);
-        
+	protected Module loadModule(File info) {
+        Module module = null;
         try(FileInputStream is = new FileInputStream(info)) {
         	
-        	log.info("UnMarshalling");
-            module=(Modules) unmarshaller.unmarshal(new StreamSource(is));
-            log.info("UnMarshalling"+module.toString());
+            log.debug("UnMarshalling "+info);
+            module=(Module) unmarshaller.unmarshal(new StreamSource(is));
+            log.debug("UnMarshalling"+module.toString());
         } catch(Exception e){
         	e.printStackTrace();
         }

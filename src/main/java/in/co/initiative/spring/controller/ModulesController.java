@@ -2,12 +2,13 @@ package in.co.initiative.spring.controller;
 
 
 
-import in.co.initiative.spring.model.Modules;
+import in.co.initiative.spring.model.xml.Module;
 import in.co.initiative.spring.service.ModulesService;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class ModulesController{
 	@Autowired
 	ModulesService moduleService;
 	
-	private List<Modules> modules = Collections.emptyList();
+	private List<Module> modules = new ArrayList<Module>();
 	
 	@RequestMapping("/")
 	public ModelAndView loadModules()
@@ -55,9 +56,9 @@ public class ModulesController{
 			e.printStackTrace();
 		}
 		
-		log.info("Modules loaded");
+		log.info("Modules loaded"+modules);
 		
-		model.addObject(modules);
+		model.addObject("modules",modules);
 		model.setViewName("modules");
     	return model;
 	}
