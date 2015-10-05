@@ -120,7 +120,8 @@ public class InitiativeServlet extends GroovyServlet {
     }
     
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     	log.trace("Using Initiative Framework Servlet");
@@ -136,9 +137,15 @@ public class InitiativeServlet extends GroovyServlet {
 
         // Run the script
         try {
-            Closure closure = new Closure(gse) {
+            @SuppressWarnings("rawtypes")
+			Closure closure = new Closure(gse) {
 
-                public Object call() {
+                /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				public Object call() {
                     try {
                         return ((GroovyScriptEngine) getDelegate()).run(scriptUri, binding);
                     } catch (ResourceException e) {
