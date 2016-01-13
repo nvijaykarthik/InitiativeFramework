@@ -1,0 +1,6 @@
+1)	Edit the Context.xml and add the below lines at the end of context tag to create the datasource
+<Resource maxIdle="10" username="sa" maxTotal="20" maxWaitMillis="10000" name="jdbc/initiativeDS" driverClassName="org.h2.Driver" type="javax.sql.DataSource" password="" auth="Container" url="jdbc:h2:~/initiative"/>
+
+2)	Edit the server.xml and modify the ports 
+
+3)	Make change to accept log4j settings in tomcat
