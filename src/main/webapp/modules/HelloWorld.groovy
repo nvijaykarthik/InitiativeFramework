@@ -7,6 +7,7 @@ def method = request.method
 
 def sql = new Sql(datasource);
 
+
 if (!session) {
     session = request.getSession(true)
 }
@@ -14,6 +15,9 @@ if (!session) {
 if (!session.groovlet) {
     session.groovlet = 'Groovlets rock!'
 }
+
+sql.eachRow('select * from module') { row -> logger.info "${row.description}"};
+ 
 
 html.html {
     head {
@@ -35,5 +39,7 @@ html.html {
                 li "${it.key} = ${it.value}"
             }
         }
+        
+        
     }
 }

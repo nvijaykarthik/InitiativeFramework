@@ -4,15 +4,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.log4j.Logger;
-
+import java.util.logging.*;
 import groovy.lang.Binding;
 import groovy.util.GroovyScriptEngine;
 
 
 
 public class GroovyContextListener implements ServletContextListener {
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private String[] initScripts;
 	private String[] destroyScripts;
 	private GroovyScriptEngine scriptEngine;
@@ -32,7 +31,7 @@ public class GroovyContextListener implements ServletContextListener {
 
 		try {
 			String webappDir = ctx.getRealPath("");
-			logger.debug(webappDir);
+			logger.info(webappDir);
 			String[] dirs = new String[] { webappDir,"/" };
 			scriptEngine = new GroovyScriptEngine(dirs);
 

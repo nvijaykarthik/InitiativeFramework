@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<name>Module Management</name>
+	<description>Enable Module Management</description>
+	<date>25/04/2015</date>
+	<version>1.0</version>
+	<project>initiative Framework</project>
+	<menu>
+		<name>Module Management</name>
+		<path>/initiative/administrator/</path>
+	</menu>
+	
+</module>

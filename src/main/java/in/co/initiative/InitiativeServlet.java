@@ -32,11 +32,12 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import java.util.logging.*;
 import org.codehaus.groovy.runtime.GroovyCategorySupport;
 
 
@@ -47,23 +48,26 @@ public class InitiativeServlet extends GroovyServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private final Logger log = Logger.getLogger(this.getClass());
+	private final Logger log = Logger.getLogger(this.getClass().getName());
 
 	private GroovyScriptEngine gse;
 
-	
+	private String scriptPath=null;
 	public void init(ServletConfig config) throws ServletException {
 	        super.init(config);
-
+	        
+	       	scriptPath="/modules/";
 	        // Set up the scripting engine
 	        gse = createGroovyScriptEngine();
-	        
 	        servletContext.log("Groovy servlet initialized on " + gse + " by Initiative Framework.");
+	        
+	        log.info("Loading Script from " + scriptPath + " by Initiative Framework.");
+	        
 	    }
 	
     @Override
     public URLConnection getResourceConnection(String name) throws ResourceException {
-    	log.trace("getResourceConnection : "+name);
+    	log.finer("getResourceConnection : "+name);
         name = removeNamePrefix(name);
         name = name.replaceAll("\\\\", "/");
 
@@ -74,13 +78,8 @@ public class InitiativeServlet extends GroovyServlet {
         * Try to locate the resource and return an opened connection to it.
         */
         try {
-            String tryScriptName = "/" + name;
+            String tryScriptName = scriptPath + name;
             URL url = servletContext.getResource(tryScriptName);
-            if (url == null) {
-                tryScriptName = "/modules" + name;
-                url = servletContext.getResource("/modules/" + name);
-            }
-          
             if (url == null) {
                 throw new ResourceException("Resource \"" + name + "\" not found!");
             }
@@ -124,7 +123,7 @@ public class InitiativeServlet extends GroovyServlet {
 	@Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    	log.trace("Using Initiative Framework Servlet");
+    	log.finer("Using Initiative Framework Servlet");
         // Get the script path from the request - include aware (GROOVY-815)
         final String scriptUri = getScriptUri(request);
 

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+import java.util.logging.*;
 
 import groovy.servlet.ServletBinding;
 
@@ -23,9 +23,10 @@ public class InitiativeServletBinding extends ServletBinding{
 		
 		String script=request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
 		logger= Logger.getLogger(script);
-		logger.trace("Using Initiative Framework Bindings");
+		logger.finer("Using Initiative Framework Bindings");
 		
 		super.setVariable("logger", logger);
+		super.setVariable("log", logger);
 		super.setVariable("datasource", context.getAttribute("dataSource"));
 	}
 

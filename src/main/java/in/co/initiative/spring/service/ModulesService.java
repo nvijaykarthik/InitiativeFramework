@@ -13,7 +13,7 @@ import org.springframework.oxm.Unmarshaller;
 import javax.annotation.PostConstruct;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.log4j.Logger;
+import java.util.logging.*;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,7 +27,7 @@ import in.co.initiative.spring.model.Module;
 @Component
 public class ModulesService extends HibernateDaoSupport  {
 
-	private final Logger log = Logger.getLogger(this.getClass());
+	private final Logger log = Logger.getLogger(this.getClass().getName());
 	
 	@Autowired
 	@Qualifier("sessionFactory")
@@ -52,14 +52,14 @@ public class ModulesService extends HibernateDaoSupport  {
 			File info=new File(contextPath+directory+File.separator+"initiative-info.xml");
 			Module m=loadModule(info);
 			mapModule.put(m.getName(), m);
-			log.debug("Module Added"+directory);
+			log.fine("Module Added"+directory);
 		}
 		
 		List<Module> mergedModule = getModuleFromDB();
 		
 		for(Module module:mergedModule)
 		{
-			log.info(module);
+			log.info(module.toString());
 			mapModule.put(module.getName(),module);
 		}
 		List<Module> modules = new ArrayList<Module>(mapModule.values());
@@ -71,9 +71,9 @@ public class ModulesService extends HibernateDaoSupport  {
         Module module = null;
         try(FileInputStream is = new FileInputStream(info)) {
         	
-            log.debug("UnMarshalling "+info);
+            log.fine("UnMarshalling "+info.toString());
             module=(Module) unmarshaller.unmarshal(new StreamSource(is));
-            log.debug("UnMarshalling"+module.toString());
+            log.fine("UnMarshalling"+module.toString());
         } catch(Exception e){
         	e.printStackTrace();
         }

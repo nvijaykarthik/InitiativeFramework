@@ -40,8 +40,6 @@ dependencies {
 	compile 'jstl:jstl:1.2'
 	compile 'org.springframework:spring-oxm:4.2.1.RELEASE'
 
-	
-	providedCompile 'log4j:log4j:1.2.17'
 	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 	providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
 	
@@ -52,8 +50,21 @@ dependencies {
 
 
 task explodedWar(type: Copy) {
-    into "$buildDir/exploded"
+    into "/home/vijaykarthik/softwares/IFServer/webapps/ROOT"
     with war
 }
+
 war.dependsOn explodedWar
 
+task copyModules {
+    copy {
+        from 'src/main/webapp/modules'
+        into '/home/vijaykarthik/softwares/IFServer/webapps/ROOT/modules'
+    }
+}
+task copyAdmin {
+    copy {
+        from 'src/main/webapp/admin'
+        into '/home/vijaykarthik/softwares/IFServer/webapps/ROOT/admin'
+    }
+}

@@ -4,6 +4,7 @@
  *
  * @author HutchUK, @date 8/4/15 12:53 PM
  */
+
 class Library {
     boolean someLibraryMethod() {
         true
